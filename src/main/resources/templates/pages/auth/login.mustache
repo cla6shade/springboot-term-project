@@ -1,0 +1,19 @@
+{{>layouts/header}}
+<div class="flex justify-center items-center h-[800px]">
+    <div class="flex w-[400px] px-10 py-10 border flex-col gap-3">
+        <h1 class="text-2xl">Login</h1>
+        <form class="w-full flex flex-col gap-2" action="/auth/login" method="post">
+            <input class="border px-2 py-1" type="text" placeholder="아이디" name="username" required />
+            <input class="border px-2 py-1" type="password" placeholder="비밀번호" name="password" required />
+            <div class="flex gap-2 w-full">
+                <a class="text-sm underline text-gray-500">아이디/비밀번호 찾기</a>
+                <a class="text-sm underline text-gray-500" href="/register">회원가입</a>
+            </div>
+            {{#errorMessage}}
+                <p class="text-red-400 text-sm">{{errorMessage}}</p>
+            {{/errorMessage}}
+            <button type="submit" class="py-2 bg-amber-400 rounded">로그인</button>
+        </form>
+    </div>
+</div>
+{{>layouts/footer}}
