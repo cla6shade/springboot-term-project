@@ -1,3 +1,36 @@
 {{>layouts/header}}
-Hello world
+<div class="flex w-full justify-center">
+    <div class="flex flex-col max-w-[1200px] px-5 py-10 w-full gap-2">
+        <form method="GET" action="/" class="flex gap-3">
+            <select name="category" class="border border-gray-300 rounded p-2">
+                <option value="">모든 카테고리</option>
+                {{#categories}}
+                    <option value="{{id}}" {{#selectedCategory}}{{#isSelected}}selected{{/isSelected}}{{/selectedCategory}}>
+                        {{name}}
+                    </option>
+                {{/categories}}
+            </select>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">필터 적용</button>
+        </form>
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-2">
+            {{#products}}
+                <a href="/products/{{id}}" class="" >
+                    <div class="w-full h-[320px] bg-white rounded shadow">
+                        <img src={{imageUrl}} alt="product" class="w-full h-[200px] rounded-t"/>
+                        <div class="w-full h-[120px] px-3 py-2 flex flex-col justify-between">
+                            <div>
+                                <h1 class="font-bold text-xl">{{name}}</h1>
+                                <p>{{description}}</p>
+                            </div>
+                            <div class="w-full flex justify-end gap-3">
+                                <p>가격: ${{price}}</p>
+                                <p class="underline text-gray-500">{{category.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {{/products}}
+        </div>
+    </div>
+</div>
 {{>layouts/footer}}
