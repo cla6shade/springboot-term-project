@@ -34,7 +34,7 @@ public class SecurityConfig {
                 // 로그아웃 설정
                 .logout(logout -> logout
                         .logoutUrl("/logout") // 로그아웃 URL
-                        .logoutSuccessUrl("/login") // 로그아웃 성공 후 리다이렉트 경로
+                        .logoutSuccessUrl("/") // 로그아웃 성공 후 리다이렉트 경로
                         .permitAll() // 로그아웃 접근 허용
                 );
 
