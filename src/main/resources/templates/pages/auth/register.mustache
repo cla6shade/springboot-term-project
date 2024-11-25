@@ -1,12 +1,15 @@
 {{>layouts/header}}
 <div class="flex justify-center items-center h-[800px]">
-    <div class="flex w-[400px] px-10 py-10 border flex-col gap-3">
+    <div class="flex w-[400px] px-10 py-10 border flex-col gap-3 bg-white">
         <h1 class="text-2xl">Register</h1>
         <form class="w-full flex flex-col gap-2" action="/auth/register" method="post">
             <input class="border px-2 py-1" type="text" placeholder="아이디" name="loginId" required />
             <input class="border px-2 py-1" type="password" placeholder="비밀번호" name="password" required />
             <input class="border px-2 py-1" type="text" placeholder="이름" name="name" required />
             <input class="border px-2 py-1" type="text" placeholder="전화번호" name="contact" required />
+            {{#error}}
+                <p class="text-red-400 text-sm">{{message}}</p>
+            {{/error}}
             <button type="submit" class="py-2 bg-amber-400 rounded">회원가입</button>
         </form>
     </div>

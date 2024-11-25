@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Controller
 public class AuthController {
     @Autowired
@@ -16,18 +18,21 @@ public class AuthController {
     @PostMapping("/auth/register")
     public String registerUser(@Valid @ModelAttribute RegisterForm registerForm,
                                BindingResult bindingResult,
-                               Model model) {
+                               RedirectAttributes redirectAttributes
+    ) {
         if (bindingResult.hasErrors()) {
-            return "pages/auth/register";
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("message", "잘못된 입력값입니다.");
+            return "redirect:/register";
         }
 
         try {
-            memberService.registerMember(registerForm); // 서비스에서 회원 저장 로직 처리
-            model.addAttribute("successMessage", "로그인에 성공했습니다. 가입에 사용한 id와 비밀번호로 로그인해주세요.");
+            memberService.registerMember(registerForm);
             return "redirect:/login";
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "회원가입 처리 중 에러가 발생했습니다.");
-            return "pages/auth/register";
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("message", "회원가입 처리 중 에러가 발생했습니다.");
+            return "redirect:/register?error=true";
         }
     }
 }
