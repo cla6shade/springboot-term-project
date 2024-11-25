@@ -1,6 +1,11 @@
 package de.clavisha.shoppingmall.controller;
 
+import de.clavisha.shoppingmall.entity.Category;
+import de.clavisha.shoppingmall.entity.Product;
+import de.clavisha.shoppingmall.repository.CategoryRepository;
+import de.clavisha.shoppingmall.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,15 +14,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/")
 public class PageController {
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private CategoryRepository categoryRepository;
     @GetMapping
-    public String mainPage(Model model) {
-        boolean isLoggedIn = checkUserLoginStatus(); // 로그인 상태 확인
-        model.addAttribute("isLoggedIn", isLoggedIn);
-        model.addAttribute("username", isLoggedIn ? getLoggedInUsername() : null);
+    public String mainPage(@RequestParam(value = "category", required = false) Long categoryId, Model model) {
+        List<Category> categories = categoryRepository.findAll();
+        categories.forEach(category -> category.setSelected(category.getId().equals(categoryId)));
+        List<Product> products;
+
+        if (categoryId != null) {
+            products = productService.getProductsByCategoryId(categoryId);
+        } else {
+            products = productService.getAllProducts();
+        }
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
         return "pages/index";
     }
 
@@ -35,17 +54,6 @@ public class PageController {
             model.addAttribute("errorMessage", "가입하지 않은 사용자이거나 비밀번호가 올바르지 않습니다.");
         }
         return "pages/auth/register";
-    }
-
-
-    private boolean checkUserLoginStatus() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String && authentication.getPrincipal().equals("anonymousUser"));
-    }
-
-    private String getLoggedInUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null ? authentication.getName() : null;
     }
 
 }
