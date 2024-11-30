@@ -1,0 +1,90 @@
+{{>layouts/header}}
+<div class="flex flex-col w-full items-center">
+    <div class="flex w-full max-w-[1200px] flex-col items-center gap-2 px-5 py-5">
+        <h1 class="text-2xl font-bold">장바구니</h1>
+        <div class="flex flex-col w-full gap-2">
+            {{^cart}}
+                <div class="flex justify-center">
+                    <p class="text-xl">장바구니에 담은 상품이 없어요.</p>
+                </div>
+            {{/cart}}
+            {{#cart}}
+                <div class="flex w-full px-3 py-3 gap-4 rounded shadow order-item">
+                    <div class="h-[150px] w-[150px] max-w-[150px]">
+                        <img class="max-w-[150px] grow rounded-l" alt="product image" src="{{product.imageUrl}}"/>
+                    </div>
+                    <div class="flex flex-col gap-2 grow">
+                        <h1 class="text-xl">{{product.name}}</h1>
+                        <div class="flex flex-col gap-1">
+                            <p class="text-gray-600 mb-4">{{product.description}}</p>
+                            <p class="text-lg font-semibold text-gray-800">가격: ${{product.price}}</p>
+                            <p class="text-sm text-gray-500">남은 수량: {{product.stock}}</p>
+                            <p class="text-sm text-gray-500">카테고리: {{product.category.name}}</p>
+                        </div>
+                    </div>
+                    <form action="/myProducts/cart/remove/{{id}}" class="flex items-end">
+                        <div class="flex flex-col gap-2">
+                            <a
+                              class="rounded-lg px-3 py-2 bg-amber-400 w-[150px] hover:bg-amber-300 cursor-pointer flex justify-center"
+                              href="/order/{{product.id}}"
+                            >
+                                구매
+                            </a>
+                            <button
+                              class="rounded-lg px-3 py-2 border border-amber-400 w-full hover:bg-amber-300 cursor-pointer flex justify-center"
+                              type="submit"
+                            >
+                                장바구니에서 제거
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            {{/cart}}
+        </div>
+    </div>
+
+    <div class="flex w-full max-w-[1200px] flex-col items-center gap-2 px-5 py-5">
+        <h1 class="text-2xl font-bold">내 위시리스트</h1>
+        <div class="flex flex-col w-full gap-2">
+            {{^wishlist}}
+                <div class="flex justify-center">
+                    <p class="text-xl">위시리스트에 상품이 없어요.</p>
+                </div>
+            {{/wishlist}}
+            {{#wishlist}}
+                <div class="flex w-full px-3 py-3 gap-4 rounded shadow order-item">
+                    <div class="h-[150px] w-[150px] max-w-[150px]">
+                        <img class="max-w-[150px] grow rounded-l" alt="product image" src="{{product.imageUrl}}"/>
+                    </div>
+                    <div class="flex flex-col gap-2 grow">
+                        <h1 class="text-xl">{{product.name}}</h1>
+                        <div class="flex flex-col gap-1">
+                            <p class="text-gray-600 mb-4">{{product.description}}</p>
+                            <p class="text-lg font-semibold text-gray-800">가격: ${{product.price}}</p>
+                            <p class="text-sm text-gray-500">남은 수량: {{product.stock}}</p>
+                            <p class="text-sm text-gray-500">카테고리: {{product.category.name}}</p>
+                        </div>
+                    </div>
+
+                    <form action="/myProducts/wishlist/remove/{{id}}" class="flex w-[170px] items-end">
+                        <div class="flex flex-col gap-2">
+                            <a
+                              class="rounded-lg px-3 py-2 bg-amber-400 w-[170px] hover:bg-amber-300 cursor-pointer flex justify-center"
+                              href="/order/{{product.id}}"
+                            >
+                                구매
+                            </a>
+                            <button
+                              class="rounded-lg px-3 py-2 border border-amber-400 w-full hover:bg-amber-300 cursor-pointer flex justify-center"
+                              type="submit"
+                            >
+                                위시리스트에서 제거
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            {{/wishlist}}
+        </div>
+    </div>
+</div>
+{{>layouts/footer}}

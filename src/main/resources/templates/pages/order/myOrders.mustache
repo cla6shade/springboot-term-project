@@ -1,0 +1,104 @@
+{{>layouts/header}}
+<script defer>
+    function bindOrderStatus(orderItem){
+        const priceElement = orderItem.querySelector('.order-price');
+        const paymentStatusElement = orderItem.querySelector('.payment-status');
+        const deliveryStatusElement = orderItem.querySelector('.delivery-status');
+        const refundButton = orderItem.querySelector('.refund-button');
+        const returnButton = orderItem.querySelector('.return-button');
+        const cancelButton = orderItem.querySelector('.cancel-button');
+        const states = {
+            COMPLETE: '결제 완료',
+            INCOMPLETE: '결제 전',
+            REFUNDED: '환불',
+            PREPARING: '상품 준비중',
+            DELIVERING: '배달 중',
+            DELIVER_COMPLETED: '배달 완료',
+            RETURNED: '반품',
+        }
+        const price = parseInt(priceElement.dataset.price);
+        const count = parseInt(priceElement.dataset.count);
+        const paymentStatus = paymentStatusElement.dataset.status;
+        const deliveryStatus = deliveryStatusElement.dataset.status;
+        priceElement.textContent = `구매가격: $${price*count}`;
+        paymentStatusElement.textContent = `결제 상태: ${states[paymentStatus]}`;
+        deliveryStatusElement.textContent = paymentStatus === 'COMPLETE' || deliveryStatus === 'DELVER'
+            ? `배달 상태: ${states[deliveryStatus]}` : '';
+        cancelButton.disabled = paymentStatus !== 'INCOMPLETE';
+        if(paymentStatus === 'COMPLETE' && deliveryStatus === 'DELIVER_COMPLETED') {
+            refundButton.disabled = true;
+            return;
+        }
+        if(deliveryStatus === 'PREPARING' && paymentStatus === 'COMPLETE') {
+            returnButton.disabled = true;
+            return;
+        }
+        refundButton.disabled = true;
+        returnButton.disabled = true;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.order-item').forEach(bindOrderStatus);
+    });
+</script>
+{{#message}}
+    <script>
+        alert("{{message}}");
+    </script>
+{{/message}}
+<div class="flex flex-col w-full items-center">
+    <div class="flex w-full max-w-[1200px] flex-col items-center gap-2 px-5 py-5">
+        <h1 class="text-2xl font-bold">내 주문내역</h1>
+        <div class="flex flex-col w-full gap-2">
+            {{#orders}}
+                <a class="flex w-full px-3 py-3 gap-4 rounded shadow order-item decoration-none"
+                   href="/products/{{product.id}}">
+                    <div class="h-[100px] w-[100px] md:w-[150px] md:h-[150px]">
+                        <img class="w-full" alt="product image" src="{{product.imageUrl}}"/>
+                    </div>
+                    <div class="flex flex-col gap-2 grow">
+                        <h1 class="text-xl font-bold">{{product.name}} X {{orderCount}} (${{product.price}})</h1>
+                        <div class="flex flex-col gap-1">
+                            <p data-count="{{orderCount}}" data-price="{{product.price}}" class="order-price"></p>
+                            <p>주소지: {{address}}</p>
+                            <p data-status="{{paymentStatus}}" class="payment-status"></p>
+                            <p data-status="{{deliveryStatus}}" class="delivery-status"></p>
+                        </div>
+                    </div>
+                    <div class="flex items-end md:flex-row flex-col gap-2">
+                        <form action="/order/refund/{{id}}">
+                            <button
+                                    class="w-full max-h-[40px] bg-red-400
+                                hover:bg-red-300 disabled:bg-red-100 disabled:cursor-not-allowed disabled:hover:bg-red-100
+                                cursor-pointer flex justify-center rounded-lg px-3 py-2 refund-button"
+                                    type="submit"
+                            >
+                                환불
+                            </button>
+                        </form>
+                        <form action="/order/return/{{id}}">
+                            <button class="w-full max-h-[40px] bg-red-400
+                           hover:bg-red-300 disabled:bg-red-100 disabled:cursor-not-allowed disabled:hover:bg-red-100
+                           cursor-pointer flex justify-center rounded-lg px-3 py-2 return-button"
+                                    type="submit"
+                            >
+                                반품
+                            </button>
+                        </form>
+
+                        <form action="/order/cancel/{{id}}">
+                            <button class="w-full max-h-[40px] bg-red-400
+                           hover:bg-red-300 disabled:bg-red-100 disabled:cursor-not-allowed disabled:hover:bg-red-100
+                           cursor-pointer flex justify-center rounded-lg px-3 py-2 cancel-button"
+                                    type="submit"
+                                    disabled
+                            >
+                                주문취소
+                            </button>
+                        </form>
+                    </div>
+                </a>
+            {{/orders}}
+        </div>
+    </div>
+</div>
+{{>layouts/footer}}

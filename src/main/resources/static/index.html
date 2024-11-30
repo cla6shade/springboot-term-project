@@ -3,9 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet"
+          as="style"
+          crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50">
+<header class="flex justify-center w-full px-5 py-2 shadow">
+    <div class="flex max-w-[1200px] h-[50px] w-full justify-between items-center">
+        <a href="/">
+            <h1 class="text-amber-400 font-bold text-2xl">Shopping Mall</h1>
+        </a>
+        <ul class="flex gap-5">
+            {{#isLoggedIn}}
+            <li><a class="text-black">주문내역</a></li>
+            <li><a class="text-black">장바구니</a></li>
+            <li><a class="text-black">내 프로필</a></li>
+            <li><a class="text-black" href="/logout">로그아웃</a></li>
+            {{/isLoggedIn}}
+            {{^isLoggedIn}}
+            <li><a class="text-black" href="/login">로그인</a></li>
+            {{/isLoggedIn}}
+        </ul>
+    </div>
+</header>
 
 </body>
 </html>

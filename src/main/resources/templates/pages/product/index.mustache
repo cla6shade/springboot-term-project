@@ -10,7 +10,10 @@
                 <p class="text-sm text-gray-500">남은 수량: {{product.stock}}</p>
                 <p class="text-sm text-gray-500 mb-4">카테고리: {{product.category.name}}</p>
                 <div class="flex flex-col gap-2">
-                    <a class="rounded-lg px-3 py-2 bg-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center">
+                    <a
+                            class="rounded-lg px-3 py-2 bg-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center"
+                            href="/order/{{product.id}}"
+                    >
                         구매
                     </a>
                     <a class="rounded-lg px-3 py-2 border border-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center">
@@ -23,21 +26,75 @@
 
     <div class="bg-white shadow rounded-lg px-5 py-5 w-full max-w-[1200px]">
         <h2 class="text-2xl font-semibold mb-4">상품 후기</h2>
+
+        {{#canWriteReview}}
+            <form action="/reviews/add" method="POST" class="flex flex-col gap-4 mb-6">
+                <input type="hidden" name="productId" value="{{product.id}}"/>
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700">제목</label>
+                    <input type="text" id="title" name="title" class="mt-1 block px-2 py-3 w-full border rounded sm:text-sm" required>
+                </div>
+                <div>
+                    <label for="content" class="block text-sm font-medium text-gray-700">내용</label>
+                    <textarea id="content" name="content" rows="4" class="mt-1 block w-full px-2 py-3 border rounded sm:text-sm" required></textarea>
+                </div>
+                <div>
+                    <label for="stars" class="block text-sm font-medium text-gray-700">별점</label>
+                    <select id="stars" name="stars" class="mt-1 block w-full rounded sm:text-sm" required>
+                        <option value="">별점을 선택해주세요</option>
+                        <option value="1">1점</option>
+                        <option value="2">2점</option>
+                        <option value="3">3점</option>
+                        <option value="4">4점</option>
+                        <option value="5">5점</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-amber-400 hover:bg-amber-300 text-white py-2 px-4 rounded-lg">
+                    후기 작성
+                </button>
+            </form>
+        {{/canWriteReview}}
+
         {{#reviews}}
             <div class="border-b border-gray-200 pb-4 mb-4">
                 <h3 class="text-lg font-bold">{{title}}</h3>
                 <div class="flex items-center text-yellow-500 mb-2">
                     {{#stars}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.165c.969 0 1.372 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.839-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.07 9.384c-.784-.57-.381-1.81.588-1.81h4.165a1 1 0 00.95-.69l1.286-3.957z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.165c.969 0 1.372 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.839-.197-1.54-1.118l1.286-3.957a1 1 0 00-.364-1.118L2.07 9.384c-.784-.57-.381-1.81.588-1.81h4.165a1 1 0 00.95-.69l1.286-3.957z"/>
+                        </svg>
                         {{stars}}
                     {{/stars}}
                 </div>
                 <p class="text-gray-700">{{content}}</p>
                 <p class="text-sm text-gray-500">By: {{member.name}}</p>
+
+                <div class="pl-6 border-l-2 border-gray-200 mt-4">
+                    <h4 class="text-md font-semibold mb-2">댓글</h4>
+                    {{#subReviews}}
+                        <div class="mb-2">
+                            <p class="text-sm text-gray-700">{{content}}</p>
+                            <p class="text-xs text-gray-500">작성자: {{member.name}}</p>
+                        </div>
+                    {{/subReviews}}
+                    {{^subReviews}}
+                        <p class="text-gray-500 text-sm">작성된 댓글이 없습니다.</p>
+                    {{/subReviews}}
+
+                    {{#hasOrderedBefore}}
+                        <form action="/reviews/subreviews/add" method="POST" class="flex flex-col gap-2 mt-2">
+                            <textarea name="content" rows="2" class="w-full rounded px-2 py-3 sm:text-sm border" placeholder="댓글 작성" required></textarea>
+                            <input type="hidden" name="parentReviewId" value="{{id}}">
+                            <button type="submit" class="bg-amber-400 hover:bg-amber-300 text-white py-1 px-4 rounded-lg text-sm self-end">
+                                댓글 작성
+                            </button>
+                        </form>
+                    {{/hasOrderedBefore}}
+                </div>
             </div>
         {{/reviews}}
         {{^reviews}}
-            <p class="text-gray-500">No reviews yet.</p>
+            <p class="text-gray-500">작성된 리뷰가 없습니다.</p>
         {{/reviews}}
     </div>
 </div>

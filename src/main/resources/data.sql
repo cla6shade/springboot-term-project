@@ -35,3 +35,28 @@ VALUES (6, 1, '가격 대비 좋음', '가격 대비 훌륭한 가치입니다. 
        (3, 1, '실망스러움', '이 제품을 정말 좋아했습니다. 강력 추천합니다!', 1),
        (4, 1, '그럭저럭', '그냥 괜찮았어요, 특별한 건 없었습니다.', 2),
        (7, 1, '조금 아쉬움', '품질이 다소 부족했지만 사용할 만했습니다.', 5);
+
+INSERT INTO product_order (product_id, member_id, address, order_count, payment_status, delivery_status)
+VALUES (7, 1, 'Mock Address 1', 4, 'COMPLETE', 'PREPARING'),
+       (3, 1, 'Mock Address 2', 2, 'COMPLETE', 'DELIVER_COMPLETED'),
+       (10, 1, 'Mock Address 3', 3, 'COMPLETE', 'PREPARING'),
+       (1, 1, 'Mock Address 4', 5, 'COMPLETE', 'PREPARING'),
+       (8, 1, 'Mock Address 5', 1, 'COMPLETE', 'DELIVER_COMPLETED'),
+       (2, 1, 'Mock Address 6', 4, 'COMPLETE', 'PREPARING'),
+       (5, 1, 'Mock Address 7', 2, 'COMPLETE', 'PREPARING'),
+       (9, 1, 'Mock Address 8', 3, 'COMPLETE', 'DELIVER_COMPLETED'),
+       (4, 1, 'Mock Address 9', 1, 'COMPLETE', 'DELIVER_COMPLETED'),
+       (6, 1, 'Mock Address 10', 2, 'COMPLETE', 'DELIVER_COMPLETED'),
+       (3, 1, 'Mock Address 11', 3, 'COMPLETE', 'PREPARING'),
+       (8, 1, 'Mock Address 12', 5, 'COMPLETE', 'PREPARING'),
+       (2, 1, 'Mock Address 13', 4, 'INCOMPLETE', 'PREPARING');
+
+INSERT INTO wishlist (product_id, member_id)
+VALUES (1, 1),
+       (2, 1),
+       (3, 1);
+
+INSERT INTO cart (product_id, member_id)
+VALUES (4, 1),
+       (5, 1),
+       (6, 1);

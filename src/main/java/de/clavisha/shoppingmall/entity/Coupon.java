@@ -1,5 +1,6 @@
 package de.clavisha.shoppingmall.entity;
 
+import de.clavisha.shoppingmall.enumerates.CouponType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,11 +16,15 @@ public class Coupon {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member user;
+    private Member member;
 
-    private Byte discountPercent;
+    private Integer discountPercent;
 
     private Integer discountPrice;
 
-    private Byte type;
+    private Boolean isUsed;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CouponType type;
 }

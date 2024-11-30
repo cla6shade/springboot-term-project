@@ -1,10 +1,17 @@
 package de.clavisha.shoppingmall.entity;
 
+import de.clavisha.shoppingmall.enumerates.DeliveryStatus;
+import de.clavisha.shoppingmall.enumerates.PaymentStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +32,20 @@ public class ProductOrder {
     private Short orderCount;
 
     @Column(nullable = false)
-    private Boolean paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     @Column(nullable = false)
-    private Boolean deliveryStatus;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
+
+    @Builder
+    public ProductOrder(Product product, Member member, String address, Short orderCount) {
+        this.product = product;
+        this.member = member;
+        this.address = address;
+        this.orderCount = orderCount;
+        this.paymentStatus = PaymentStatus.COMPLETE;
+        this.deliveryStatus = DeliveryStatus.PREPARING;
+    }
 }
