@@ -1,0 +1,48 @@
+{{>layouts/header}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector("button[type='submit']").addEventListener('click', () => {
+            alert("본인인증이 완료되었습니다.");
+            location.href = "/";
+        });
+    })
+</script>
+<div class="w-full py-5 px-3 flex justify-center">
+    <div class="max-w-[1200px] bg-white shadow rounded-lg px-5 py-5 w-full">
+
+        <h1 class="text-2xl font-bold mb-2 pb-4">아이디/비밀번호 찾기</h1>
+
+        <div class="space-y-4">
+            <div>
+                <label for="contact" class="block text-sm font-medium text-gray-700">연락처</label>
+                <input
+                        type="text"
+                        id="contact"
+                        name="contact"
+                        class="rounded border h-[40px] w-full resize-none px-2 py-2 focus:outline-none"
+                        placeholder="연락처를 입력하세요"
+                        required>
+            </div>
+
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">이름</label>
+                <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="rounded border h-[40px] w-full resize-none px-2 py-2 focus:outline-none"
+                        placeholder="이름을 입력하세요"
+                        required>
+            </div>
+
+            <div class="flex justify-center">
+                <button
+                        type="submit"
+                        class="w-[200px] bg-amber-400 hover:bg-amber-300 cursor-pointer flex justify-center rounded-lg px-3 py-2">
+                    본인인증
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{{>layouts/footer}}

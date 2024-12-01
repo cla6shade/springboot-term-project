@@ -20,7 +20,7 @@ public class SecurityConfig {
                 // HTTP 요청에 대한 보안 설정
                 .authorizeHttpRequests(authorize -> authorize
                         // 인증 없이 접근 가능한 URL 목록
-                        .requestMatchers("/", "/login", "/register", "/error", "/auth/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/error", "/auth/**", "/h2-console/**", "/find").permitAll()
                         // 그 외 모든 요청은 인증 필요
                         .anyRequest().authenticated()
                 )

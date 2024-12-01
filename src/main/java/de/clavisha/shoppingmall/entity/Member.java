@@ -1,10 +1,13 @@
 package de.clavisha.shoppingmall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,6 +21,7 @@ public class Member {
     @Column(nullable = false, unique = true, length = 20)
     private String loginId;
 
+    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String password;
 
@@ -28,6 +32,9 @@ public class Member {
     private String contact;
 
     private Integer savings;
+
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime joinedAt;
 
     @Builder
     public Member(String loginId, String password, String name, String contact) {

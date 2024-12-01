@@ -1,0 +1,68 @@
+{{>layouts/header}}
+{{#message}}
+    <script>
+        alert("{{message}}");
+    </script>
+{{/message}}
+<div class="w-full py-5 px-3 flex justify-center">
+    <div class="max-w-[1200px] bg-white shadow rounded-lg px-5 py-5 w-full">
+
+        <h1 class="text-2xl font-bold mb-2 pb-4">내 프로필</h1>
+        <div class="border-b pb-4 mb-6">
+            <p class="text-lg"><strong>이름:</strong> {{member.name}}</p>
+            <p class="text-lg"><strong>연락처:</strong> {{member.contact}}</p>
+            <p class="text-lg"><strong>적립금:</strong> {{member.savings}}</p>
+            <p class="text-lg"><strong>가입일:</strong> {{member.joinedAt}}</p>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-2 pb-4">내 쿠폰</h2>
+        <div class="border-b pb-4 mb-6">
+            {{#coupons}}
+                <div class="bg-gray-50 rounded-lg p-4 mb-3">
+                    <p class="text-lg font-semibold">쿠폰 이름: {{name}}</p>
+                    <p class="text-sm">할인 금액: {{discountAmount}}원</p>
+                    <p class="text-sm">사용 여부: {{#isUsed}}사용됨{{/isUsed}}{{^isUsed}}미사용{{/isUsed}}</p>
+                    <p class="text-sm">비율 할인 여부: {{#isProportional}}비율 할인{{/isProportional}}{{^isProportional}}고정 금액 할인{{/isProportional}}</p>
+                </div>
+            {{/coupons}}
+            {{^coupons}}
+                <p class="text-sm text-gray-500">사용 가능한 쿠폰이 없습니다.</p>
+            {{/coupons}}
+        </div>
+
+        <h2 class="text-2xl font-bold mb-2 pb-4">정보 수정</h2>
+        <form action="/myInfo" method="post" class="flex flex-col gap-2">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">이름</label>
+                <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{member.name}}"
+                        class="rounded border h-[40px] w-full resize-none px-2 py-2 focus:outline-none"
+                        required
+                        maxlength="255">
+            </div>
+
+            <div>
+                <label for="contact" class="block text-sm font-medium text-gray-700">연락처</label>
+                <input
+                        type="text"
+                        id="contact"
+                        name="contact"
+                        value="{{member.contact}}"
+                        class="rounded border h-[40px] w-full resize-none px-2 py-2 focus:outline-none"
+                        maxlength="32">
+            </div>
+
+            <div>
+                <button
+                        type="submit"
+                        class="w-[200px] bg-amber-400 hover:bg-amber-300 cursor-pointer flex justify-center rounded-lg px-3 py-2">
+                    정보 수정
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{{>layouts/footer}}

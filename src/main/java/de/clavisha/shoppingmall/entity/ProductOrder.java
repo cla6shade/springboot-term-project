@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -37,6 +39,9 @@ public class ProductOrder {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
+
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
     @Builder
     public ProductOrder(Product product, Member member, Short orderCount) {

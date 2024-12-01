@@ -11,6 +11,17 @@
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}`;
+        }
+    </script>
     <style>
         body {
             font-family: 'Pretendard', sans-serif;
@@ -29,7 +40,7 @@
                 <li><a class="text-black" href="/order">주문내역</a></li>
                 <li><a class="text-black" href="/myProducts">담은상품</a></li>
                 <li><a class="text-black" href="/tickets/myTickets">문의내역</a></li>
-                <li><a class="text-black">내 프로필</a></li>
+                <li><a class="text-black" href="/myInfo">내 프로필</a></li>
                 <li><a class="text-black" href="/logout">로그아웃</a></li>
             {{/isLoggedIn}}
             {{^isLoggedIn}}

@@ -1,0 +1,42 @@
+{{>layouts/header}}
+<div class="flex w-full justify-center py-10">
+    <div class="flex flex-col w-full px-4 py-5 max-w-[1200px] rounded shadow bg-white">
+
+        <h1 class="text-2xl">문의하기</h1>
+
+        {{#ticket.product}}
+            <div class="flex flex-col md:flex-row h-[150px]">
+                <img src="{{ticket.product.imageUrl}}" alt="product image" class="w-[150px] h-[150px] rounded pr-3"/>
+                <div class="flex flex-col py-5">
+                    <h2>상품 정보</h2>
+                    <p><strong>상품명</strong> {{ticket.product.name}}</p>
+                    <p><strong>상품 설명</strong> {{ticket.product.description}}</p>
+                </div>
+            </div>
+        {{/ticket.product}}
+        <div class="py-5">
+            <p><strong>문의 제목:</strong> {{ticket.title}}</p>
+            <p><strong>문의 내용:</strong> {{ticket.content}}</p>
+        </div>
+        <div class="flex gap-3 items-center justify-end">
+            <a href="/tickets/delete?ticketId={{ticket.id}}">삭제</a>
+            <a href="/tickets/edit/{{ticket.id}}">수정</a>
+        </div>
+        {{#replies}}
+            <div class="border-b border-gray-200 pb-4 mb-4">
+                <p class="text-gray-700">{{content}}</p>
+                <p class="text-sm text-gray-500">By: {{member.name}}</p>
+            </div>
+        {{/replies}}
+        {{^replies}}
+            <p class="text-gray-500">작성된 답변이 없습니다.</p>
+        {{/replies}}
+        <form action="/tickets/reply/{{ticket.id}}" method="POST" class="flex flex-col gap-2 mt-2">
+            <textarea name="content" rows="2" class="w-full rounded px-2 py-3 sm:text-sm border" required></textarea>
+            <button type="submit" class="bg-amber-400 hover:bg-amber-300 text-white py-1 px-4 rounded-lg text-sm self-end">
+                댓글 작성
+            </button>
+        </form>
+    </div>
+</div>
+{{>layouts/footer}}

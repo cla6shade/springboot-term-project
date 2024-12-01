@@ -3,8 +3,10 @@ package de.clavisha.shoppingmall.controller;
 import de.clavisha.shoppingmall.entity.Member;
 import de.clavisha.shoppingmall.entity.Product;
 import de.clavisha.shoppingmall.entity.Ticket;
+import de.clavisha.shoppingmall.entity.TicketReply;
 import de.clavisha.shoppingmall.form.TicketForm;
 import de.clavisha.shoppingmall.repository.ProductRepository;
+import de.clavisha.shoppingmall.repository.TicketReplyRepository;
 import de.clavisha.shoppingmall.repository.TicketRepository;
 import de.clavisha.shoppingmall.service.MemberService;
 import jakarta.validation.Valid;
@@ -28,6 +30,8 @@ public class TicketController {
     private ProductRepository productRepository;
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private TicketReplyRepository ticketReplyRepository;
 
     @PostMapping
     public String createTicket(@ModelAttribute @Valid TicketForm ticketForm, RedirectAttributes redirectAttributes) {
@@ -46,19 +50,70 @@ public class TicketController {
         return "redirect:/tickets/myTickets";
     }
 
+    @GetMapping("/edit/{ticketId}")
+    public String editTicketPage(@PathVariable("ticketId") Long ticketId,
+                                 Model model) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        model.addAttribute("ticket", ticket);
+        return "pages/tickets/ticketEdit";
+    }
+
+    @PostMapping("/edit/{ticketId}")
+    public String editTicket(@PathVariable("ticketId") Long ticketId,
+                                 TicketForm form,
+                                 RedirectAttributes redirectAttributes) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        ticket.setContent(form.getContent());
+        ticket.setTitle(form.getTitle());
+        ticketRepository.save(ticket);
+        redirectAttributes.addFlashAttribute("message", "문의사항 수정이 완료되었습니다.");
+        return "redirect:/tickets/view/" + ticketId;
+    }
+
+    @PostMapping("/reply/{ticketId}")
+    public String replyTicket(@PathVariable("ticketId") Long ticketId,
+                              TicketForm form,
+                              RedirectAttributes redirectAttributes) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        TicketReply reply = TicketReply.builder()
+                .ticket(ticket)
+                .content(form.getContent())
+                .member(getCurrentMember())
+                .build();
+        ticketReplyRepository.save(reply);
+        return "redirect:/tickets/view/" + ticketId;
+    }
+
+
+    @GetMapping("/view/{ticketId}")
+    public String ticketViewPage(@PathVariable("ticketId") Long ticketId, Model model) {
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow();
+        model.addAttribute("ticket", ticket);
+        List<TicketReply> replies = ticketReplyRepository.findAllByTicketId(ticketId);
+        model.addAttribute("replies", replies);
+        return "pages/tickets/ticketInfo";
+    }
+
+    @GetMapping("/delete")
+    public String deleteTicket(@RequestParam("ticketId") Long ticketId, RedirectAttributes redirectAttributes) {
+        ticketRepository.deleteById(ticketId);
+        redirectAttributes.addFlashAttribute("message", "문의 삭제가 완료되었습니다.");
+        return "redirect:/tickets/myTickets";
+    }
+
     @GetMapping("/myTickets")
     public String myTicketsPage(Model model) {
         List<Ticket> tickets = ticketRepository.findAllByMember(getCurrentMember());
         model.addAttribute("tickets", tickets);
         return "pages/tickets/myTickets";
     }
-    @GetMapping
+    @GetMapping("/new")
     public String newTicketsPage(Model model) {
         model.addAttribute("product", null);
         return "pages/tickets/index";
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/new/{productId}")
     public String newTicketsPageWithProduct(@PathVariable Long productId, Model model) {
         Product product = productRepository.findById(productId).orElse(null);
         model.addAttribute("product", product);

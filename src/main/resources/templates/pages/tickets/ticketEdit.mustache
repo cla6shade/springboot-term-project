@@ -1,0 +1,37 @@
+{{>layouts/header}}
+<div class="flex w-full justify-center py-10">
+    <div class="flex flex-col w-full px-4 py-5 max-w-[1200px] rounded shadow bg-white">
+
+        <h1 class="text-2xl">문의하기</h1>
+
+        {{#ticket.product}}
+            <div class="flex flex-col md:flex-row h-[150px]">
+                <img src="{{ticket.product.imageUrl}}" alt="product image" class="w-[150px] h-[150px] rounded pr-3"/>
+                <div class="flex flex-col py-5">
+                    <h2>상품 정보</h2>
+                    <p><strong>상품명</strong> {{ticket.product.name}}</p>
+                    <p><strong>상품 설명</strong> {{ticket.product.description}}</p>
+                </div>
+            </div>
+        {{/ticket.product}}
+
+        <form action="/tickets/edit/{{ticket.id}}" method="post" class="flex flex-col py-3">
+            <label for="title" class="text-lg mr-4">제목</label>
+            <input type="text" id="title" name="title" class="rounded focus:outline-none border px-3 py-2" required
+                   value="{{ticket.title}}"
+            />
+            <br/>
+
+            <label for="content" class="text-lg mr-4">내용</label>
+            <textarea id="content" name="content" class="rounded focus:outline-none border px-3 py-2" required>{{ticket.content}}</textarea>
+            <br/>
+
+            {{#product}}
+                <input type="hidden" name="productId" value="{{product.id}}"/>
+            {{/product}}
+
+            <button type="submit" class="bg-amber-400 hover:bg-amber-300 rounded py-3 w-[200px]">작성 완료</button>
+        </form>
+    </div>
+</div>
+{{>layouts/footer}}

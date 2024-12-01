@@ -38,6 +38,11 @@ public class PageController {
         return "pages/index";
     }
 
+    @GetMapping("find")
+    public String findPage() {
+        return "pages/auth/find";
+    }
+
     @GetMapping("login")
     public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
         if(error != null) {

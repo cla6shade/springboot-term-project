@@ -1,11 +1,14 @@
 package de.clavisha.shoppingmall.service;
 
 import de.clavisha.shoppingmall.entity.Member;
+import de.clavisha.shoppingmall.form.MyInfoUpdateForm;
 import de.clavisha.shoppingmall.form.RegisterForm;
 import de.clavisha.shoppingmall.repository.MemberRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -52,15 +55,9 @@ public class MemberService {
     public Member getMemberByLoginId(String loginId) {
         return memberRepository.findByLoginId(loginId);
     }
-    public Member updateMember(String loginId, Member memberDetails) {
-        Member member = getMemberByLoginId(loginId);
-
-        member.setName(memberDetails.getName());
-        member.setLoginId(memberDetails.getLoginId());
-        member.setPassword(memberDetails.getPassword());
-        member.setContact(memberDetails.getContact());
-        member.setSavings(memberDetails.getSavings());
-
+    public Member updateMember(@Valid @ModelAttribute MyInfoUpdateForm form, Member member) {
+        member.setName(form.getName());
+        member.setContact(form.getContact());
         return memberRepository.save(member);
     }
     public void deleteUser(String loginId) {

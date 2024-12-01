@@ -1,15 +1,37 @@
 {{>layouts/header}}
+{{#message}}
+    <script>
+        alert("{{message}}");
+    </script>
+{{/message}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.ticket-item').forEach((item) => {
+            const { ticketId } = item.dataset;
+            item.addEventListener('click', () => {
+                location.href = `/tickets/view/${ticketId}`;
+            })
+        });
+    });
+</script>
 <div class="flex justify-center">
     <div class="flex flex-col gap-3 max-w-[1200px] w-full py-5 px-3">
         <h1 class="font-bold text-2xl">내 문의내역</h1>
         {{#tickets}}
-            <div class="flex w-full rounded px-3 py-2 shadow">
-                <div class="flex flex-col">
-                    <h1 class="text-xl">제목: {{title}}</h1>
-                    {{#product}}
-                        <p>상품명: {{name}}</p>
-                    {{/product}}
-                    <p>내용: {{content}}</p>
+            <div class="flex items-center cursor-pointer ticket-item" data-ticket-id="{{id}}">
+                <div class="flex w-full rounded px-3 py-2 shadow">
+                    <div class="flex flex-col grow">
+                        <h1 class="text-xl">제목: {{title}}</h1>
+                        {{#product}}
+                            <p>상품명: {{name}}</p>
+                        {{/product}}
+                        <p>내용: {{content}}</p>
+                        <p>작성일자: {{createdAt}}</p>
+                    </div>
+                    <div class="flex gap-3 items-center w-full justify-end">
+                        <a href="/tickets/delete?ticketId={{id}}">삭제</a>
+                        <a href="/tickets/edit/{{id}}">수정</a>
+                    </div>
                 </div>
             </div>
         {{/tickets}}
