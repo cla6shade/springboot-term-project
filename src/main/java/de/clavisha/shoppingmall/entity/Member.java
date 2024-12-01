@@ -27,7 +27,7 @@ public class Member {
     @Column(length = 32)
     private String contact;
 
-    private Integer savings = 0;
+    private Integer savings;
 
     @Builder
     public Member(String loginId, String password, String name, String contact) {
@@ -35,5 +35,6 @@ public class Member {
         this.password = password;
         this.name = name;
         this.contact = contact;
+        this.savings = 0;
     }
 }

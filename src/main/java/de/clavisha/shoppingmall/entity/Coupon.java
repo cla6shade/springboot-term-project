@@ -18,13 +18,9 @@ public class Coupon {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Integer discountPercent;
-
-    private Integer discountPrice;
+    private Integer discountAmount;
 
     private Boolean isUsed;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CouponType type;
+    private Boolean isProportional;
 }

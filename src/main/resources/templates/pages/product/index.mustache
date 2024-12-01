@@ -2,7 +2,9 @@
 <div class="flex flex-col items-center gap-5 py-5 px-3">
     <div class="bg-white shadow rounded-lg px-5 py-5 w-full max-w-[1200px]">
         <div class="flex flex-col md:flex-row items-start w-full gap-10">
-            <img src="https://picsum.photos/200" alt="{{product.name}}" class="w-full rounded-lg max-w-[300px] lg:max-w-[400px]">
+            <div class="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px]">
+                <img src="https://picsum.photos/200" alt="{{product.name}}" class="w-full rounded-lg">
+            </div>
             <div class="flex flex-col">
                 <h1 class="text-3xl font-bold mb-2">{{product.name}}</h1>
                 <p class="text-gray-600 mb-4">{{product.description}}</p>
@@ -16,8 +18,26 @@
                     >
                         구매
                     </a>
-                    <a class="rounded-lg px-3 py-2 border border-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center">
-                        장바구니에 담기
+                    <form method="post" action="/myProducts/cart?productId={{product.id}}">
+                        <button class="rounded-lg px-3 py-2 border border-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center"
+                                type="submit"
+                        >
+                            장바구니에 담기
+                        </button>
+                    </form>
+                    <form method="post" action="/myProducts/wishlist?productId={{product.id}}">
+                        <button class="rounded-lg px-3 py-2 border border-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center"
+                                type="submit"
+                        >
+                            위시리스트에 추가
+                        </button>
+                    </form>
+
+                    <a
+                       class="rounded-lg px-3 py-2 bg-amber-400 w-[200px] hover:bg-amber-300 cursor-pointer flex justify-center"
+                       href="/tickets/{{product.id}}"
+                    >
+                        상품 문의하기
                     </a>
                 </div>
             </div>

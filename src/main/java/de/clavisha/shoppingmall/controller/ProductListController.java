@@ -7,6 +7,7 @@ import de.clavisha.shoppingmall.repository.CartRepository;
 import de.clavisha.shoppingmall.repository.ProductRepository;
 import de.clavisha.shoppingmall.repository.WishlistRepository;
 import de.clavisha.shoppingmall.service.MemberService;
+import de.clavisha.shoppingmall.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,9 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -31,6 +30,8 @@ public class ProductListController {
     private MemberService memberService;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping
     public String myProductsPage(Model model) {
@@ -40,6 +41,24 @@ public class ProductListController {
         model.addAttribute("cart", cart);
         model.addAttribute("wishlist", wishlist);
         return "pages/product/myProducts";
+    }
+    @PostMapping("/cart")
+    public String addProductToCart(@RequestParam("productId") Long productId, RedirectAttributes redirectAttributes) {
+        Cart cart = new Cart();
+        cart.setProduct(productService.getProductById(productId));
+        cart.setMember(getCurrentMember());
+        cartRepository.save(cart);
+        redirectAttributes.addFlashAttribute("message", "장바구니에 상품 추가가 완료되었습니다.");
+        return "redirect:/myProducts";
+    }
+    @PostMapping("/wishlist")
+    public String addProductTowishList(@RequestParam("productId") Long productId, RedirectAttributes redirectAttributes) {
+        Wishlist wishlist = new Wishlist();
+        wishlist.setProduct(productService.getProductById(productId));
+        wishlist.setMember(getCurrentMember());
+        wishlistRepository.save(wishlist);
+        redirectAttributes.addFlashAttribute("message", "위시리스트에 상품 추가가 완료되었습니다.");
+        return "redirect:/myProducts";
     }
     @GetMapping("/cart/remove/{id}")
     public String deleteFromCart(@PathVariable("id") Long cartId, RedirectAttributes redirectAttributes) {

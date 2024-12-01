@@ -35,15 +35,24 @@ public class MemberService {
 
         memberRepository.save(newMember);
     }
-    public Member getUserById(Long id) {
+    public Member getMemberById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+    }
+
+    public void useSavings(int savingsUsageAmount, Member member) {
+        int savings = member.getSavings() - savingsUsageAmount;
+        if(savings < 0) {
+            throw new RuntimeException("Shortage of member savings");
+        }
+        member.setSavings(savings);
+        memberRepository.save(member);
     }
 
     public Member getMemberByLoginId(String loginId) {
         return memberRepository.findByLoginId(loginId);
     }
-    public Member updateUser(String loginId, Member memberDetails) {
+    public Member updateMember(String loginId, Member memberDetails) {
         Member member = getMemberByLoginId(loginId);
 
         member.setName(memberDetails.getName());

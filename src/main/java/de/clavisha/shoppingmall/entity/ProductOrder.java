@@ -25,7 +25,6 @@ public class ProductOrder {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
     private String address;
 
     @Column(nullable = false)
@@ -40,12 +39,11 @@ public class ProductOrder {
     private DeliveryStatus deliveryStatus;
 
     @Builder
-    public ProductOrder(Product product, Member member, String address, Short orderCount) {
+    public ProductOrder(Product product, Member member, Short orderCount) {
         this.product = product;
         this.member = member;
-        this.address = address;
         this.orderCount = orderCount;
-        this.paymentStatus = PaymentStatus.COMPLETE;
+        this.paymentStatus = PaymentStatus.INCOMPLETE;
         this.deliveryStatus = DeliveryStatus.PREPARING;
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/tickets")
 public class TicketController {
@@ -41,18 +43,25 @@ public class TicketController {
 
         ticketRepository.save(ticket);
 
-        return "redirect:/tickets";
+        return "redirect:/tickets/myTickets";
+    }
+
+    @GetMapping("/myTickets")
+    public String myTicketsPage(Model model) {
+        List<Ticket> tickets = ticketRepository.findAllByMember(getCurrentMember());
+        model.addAttribute("tickets", tickets);
+        return "pages/tickets/myTickets";
     }
     @GetMapping
-    public String getTicketsPage(Model model) {
-        model.addAttribute("ticket", null);
+    public String newTicketsPage(Model model) {
+        model.addAttribute("product", null);
         return "pages/tickets/index";
     }
 
     @GetMapping("/{productId}")
-    public String getTicketsPageWithProduct(@PathVariable Long productId, Model model) {
+    public String newTicketsPageWithProduct(@PathVariable Long productId, Model model) {
         Product product = productRepository.findById(productId).orElse(null);
-        model.addAttribute("ticket", product);
+        model.addAttribute("product", product);
         return "pages/tickets/index";
     }
     private String getCurrentUserName() {

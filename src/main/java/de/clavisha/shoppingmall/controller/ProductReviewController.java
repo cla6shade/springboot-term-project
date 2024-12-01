@@ -39,7 +39,6 @@ public class ProductReviewController {
     @Autowired
     private ProductSubReviewRepository productSubReviewRepository;
 
-    // 리뷰 작성 처리
     @PostMapping("/add")
     public String addReview(@Valid @ModelAttribute ProductReviewForm productReviewForm,
                             @RequestParam Long productId,

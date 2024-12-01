@@ -1,0 +1,21 @@
+{{>layouts/header}}
+<div class="flex justify-center">
+    <div class="flex flex-col gap-3 max-w-[1200px] w-full py-5 px-3">
+        <h1 class="font-bold text-2xl">내 문의내역</h1>
+        {{#tickets}}
+            <div class="flex w-full rounded px-3 py-2 shadow">
+                <div class="flex flex-col">
+                    <h1 class="text-xl">제목: {{title}}</h1>
+                    {{#product}}
+                        <p>상품명: {{name}}</p>
+                    {{/product}}
+                    <p>내용: {{content}}</p>
+                </div>
+            </div>
+        {{/tickets}}
+        {{^tickets}}
+            <p class="py-5">문의 내역이 없습니다.</p>
+        {{/tickets}}
+    </div>
+</div>
+{{>layouts/footer}}

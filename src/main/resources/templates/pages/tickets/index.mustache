@@ -1,27 +1,35 @@
 {{>layouts/header}}
-<h1>상품 문의하기</h1>
+<div class="flex w-full justify-center py-10">
+    <div class="flex flex-col w-full px-4 py-5 max-w-[1200px] rounded shadow bg-white">
 
-{{#ticket}}
-    <div>
-        <h2>상품 정보</h2>
-        <p><strong>상품명</strong> {{product.name}}</p>
-        <p><strong>상품 설명</strong> {{product.description}}</p>
+        <h1 class="text-2xl">문의하기</h1>
+
+        {{#product}}
+            <div class="flex flex-col md:flex-row h-[150px]">
+                <img src="{{product.imageUrl}}" alt="product image" class="w-[150px] h-[150px] rounded pr-3"/>
+                <div class="flex flex-col py-5">
+                    <h2>상품 정보</h2>
+                    <p><strong>상품명</strong> {{product.name}}</p>
+                    <p><strong>상품 설명</strong> {{product.description}}</p>
+                </div>
+            </div>
+        {{/product}}
+
+        <form action="/tickets" method="post" class="flex flex-col py-3">
+            <label for="title" class="text-lg mr-4">제목</label>
+            <input type="text" id="title" name="title" class="rounded focus:outline-none border px-3 py-2" required/>
+            <br/>
+
+            <label for="content" class="text-lg mr-4">내용</label>
+            <textarea id="content" name="content" class="rounded focus:outline-none border px-3 py-2" required></textarea>
+            <br/>
+
+            {{#product}}
+                <input type="hidden" name="productId" value="{{product.id}}"/>
+            {{/product}}
+
+            <button type="submit" class="bg-amber-400 hover:bg-amber-300 rounded py-3 w-[200px]">작성 완료</button>
+        </form>
     </div>
-{{/ticket}}
-
-<form action="/ticket" method="post">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" value="{{ticketForm.title}}" required/>
-    <br/>
-
-    <label for="content">Content:</label>
-    <textarea id="content" name="content" required>{{ticketForm.content}}</textarea>
-    <br/>
-
-    {{#ticket.product}}
-        <input type="hidden" name="productId" value="{{ticket.product.id}}"/>
-    {{/ticket.product}}
-
-    <button type="submit">Submit</button>
-</form>
+</div>
 {{>layouts/footer}}

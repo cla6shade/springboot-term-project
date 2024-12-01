@@ -24,19 +24,12 @@
                 <p class="text-gray-600 mb-4">{{product.description}}</p>
                 <form class="flex flex-col gap-2 w-full" action="/order?productId={{product.id}}" method="post">
                     <label class="flex flex-col">
-                        주소
-                        <textarea class="rounded border h-[80px] w-[350px] resize-none px-2 py-2 focus:outline-none"
-                                  name="address" required maxlength="255"></textarea>
-                    </label>
-                    <label class="flex flex-col">
                         수량
                         <input class="rounded border h-[40px] w-[100px] resize-none px-2 py-2 focus:outline-none"
                                name="orderCount" type="number" required max="{{product.stock}}" min="1" value="1"
                         />
                     </label>
                     <p class="text-sm text-gray-500">주문 가능 수량: {{product.stock}}</p>
-                    <!--                    <label>사용할 쿠폰</label>-->
-                    <!--                    <label>사용할 적립금</label>-->
                     <div class="flex justify-end w-full">
                         <p class="text-lg font-semibold text-gray-800 mb-2 mr-2" id="product-price">가격: ${{product.price}}</p>
                         <button type="submit"

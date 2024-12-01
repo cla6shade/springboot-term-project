@@ -1,5 +1,5 @@
-INSERT INTO member (name, login_id, password, contact)
-VALUES ('asdf', 'asdf', '$2a$10$eeL0Qnrah6l3ZPTA2zSGtuQmSIOWe8./iGvuEkRKBvgQAWvZHmY6m', 'asdf');
+INSERT INTO member (name, login_id, password, contact, savings)
+VALUES ('asdf', 'asdf', '$2a$10$eeL0Qnrah6l3ZPTA2zSGtuQmSIOWe8./iGvuEkRKBvgQAWvZHmY6m', 'asdf', 100000);
 
 INSERT INTO category (id, name)
 VALUES (1, '전자제품'),
@@ -60,3 +60,11 @@ INSERT INTO cart (product_id, member_id)
 VALUES (4, 1),
        (5, 1),
        (6, 1);
+
+INSERT INTO coupon (name, member_id, discount_amount, is_used, is_proportional)
+VALUES
+       ('10% 할인', 1, 10, false, true),
+       ('20% 할인', 1, 20, false, true),
+       ('15% 할인', 1, 15, false, true),
+       ('$5 할인', 1, 5, false, false),
+       ('$25 할인', 1, 25, false, false);
